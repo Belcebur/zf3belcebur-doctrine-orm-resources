@@ -1,0 +1,33 @@
+{
+  "name": "zf3belcebur/doctrine-orm-resources",
+  "description": "DoctrineORM Resources to ZF3",
+  "type": "library",
+  "require": {
+    "php": "^7.1",
+    "doctrine/doctrine-module": "2.*",
+    "doctrine/doctrine-orm-module": "2.*",
+    "creof/doctrine2-spatial": "1.*",
+    "beberlei/doctrineextensions": "v1.1.4",
+    "gedmo/doctrine-extensions": "^2.4"
+  },
+  "provide": {
+    "doctrine/doctrine-module": "2.*",
+    "doctrine/doctrine-orm-module": "2.*",
+    "creof/doctrine2-spatial": "1.*",
+    "beberlei/doctrineextensions": "v1.1.4",
+    "gedmo/doctrine-extensions": "^2.4"
+  },
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "David Garcia",
+      "email": "garcia.gordo.david@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "ZF3Belcebur\\DoctrineORMResources\\": "src/"
+    }
+  }
+}

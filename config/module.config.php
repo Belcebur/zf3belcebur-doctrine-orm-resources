@@ -1,27 +1,90 @@
-# zf3belcebur-doctrine-orm-resources
-DoctrineORMResources
+<?php
 
-Integrate different modules and provide new resources for DoctrineORM & ZF3:
-- [doctrine/doctrine-module](https://packagist.org/packages/doctrine/doctrine-module)
-- [doctrine/doctrine-orm-module](https://packagist.org/packages/doctrine/doctrine-orm-module)
-- [creof/doctrine2-spatial](https://packagist.org/packages/creof/doctrine2-spatial)
-- [beberlei/doctrineextensions](https://packagist.org/packages/beberlei/doctrineextensions)
-- [gedmo/doctrine-extensions](https://packagist.org/packages/gedmo/doctrine-extensions)
+namespace ZF3Belcebur\DoctrineORMResources;
 
 
-## Installation
+use CrEOF\Spatial\DBAL\Types\Geometry\LineStringType;
+use CrEOF\Spatial\DBAL\Types\Geometry\MultiPolygonType;
+use CrEOF\Spatial\DBAL\Types\Geometry\PointType;
+use CrEOF\Spatial\DBAL\Types\Geometry\PolygonType;
+use CrEOF\Spatial\ORM\Query\AST\Functions\MySql\Area;
+use CrEOF\Spatial\ORM\Query\AST\Functions\MySql\Contains;
+use CrEOF\Spatial\ORM\Query\AST\Functions\MySql\GeomFromText;
+use CrEOF\Spatial\ORM\Query\AST\Functions\MySql\GLength;
+use CrEOF\Spatial\ORM\Query\AST\Functions\MySql\LineString;
+use CrEOF\Spatial\ORM\Query\AST\Functions\MySql\LineStringFromWKB;
+use CrEOF\Spatial\ORM\Query\AST\Functions\MySql\Point;
+use CrEOF\Spatial\ORM\Query\AST\Functions\MySql\STBuffer;
+use CrEOF\Spatial\ORM\Query\AST\Functions\MySql\STContains;
+use CrEOF\Spatial\ORM\Query\AST\Functions\MySql\STDistance;
+use CrEOF\Spatial\ORM\Query\AST\Functions\MySql\STIntersects;
+use DoctrineExtensions\Query\Mysql\Acos;
+use DoctrineExtensions\Query\Mysql\Asin;
+use DoctrineExtensions\Query\Mysql\Atan;
+use DoctrineExtensions\Query\Mysql\Atan2;
+use DoctrineExtensions\Query\Mysql\Binary;
+use DoctrineExtensions\Query\Mysql\CharLength;
+use DoctrineExtensions\Query\Mysql\ConcatWs;
+use DoctrineExtensions\Query\Mysql\Cos;
+use DoctrineExtensions\Query\Mysql\Cot;
+use DoctrineExtensions\Query\Mysql\CountIf;
+use DoctrineExtensions\Query\Mysql\Crc32;
+use DoctrineExtensions\Query\Mysql\Date;
+use DoctrineExtensions\Query\Mysql\DateAdd;
+use DoctrineExtensions\Query\Mysql\DateDiff;
+use DoctrineExtensions\Query\Mysql\DateFormat;
+use DoctrineExtensions\Query\Mysql\Day;
+use DoctrineExtensions\Query\Mysql\DayName;
+use DoctrineExtensions\Query\Mysql\Degrees;
+use DoctrineExtensions\Query\Mysql\Field;
+use DoctrineExtensions\Query\Mysql\FindInSet;
+use DoctrineExtensions\Query\Mysql\GroupConcat;
+use DoctrineExtensions\Query\Mysql\Hour;
+use DoctrineExtensions\Query\Mysql\IfElse;
+use DoctrineExtensions\Query\Mysql\IfNull;
+use DoctrineExtensions\Query\Mysql\LastDay;
+use DoctrineExtensions\Query\Mysql\MatchAgainst;
+use DoctrineExtensions\Query\Mysql\Md5;
+use DoctrineExtensions\Query\Mysql\Minute;
+use DoctrineExtensions\Query\Mysql\Month;
+use DoctrineExtensions\Query\Mysql\MonthName;
+use DoctrineExtensions\Query\Mysql\NullIf;
+use DoctrineExtensions\Query\Mysql\Pi;
+use DoctrineExtensions\Query\Mysql\Power;
+use DoctrineExtensions\Query\Mysql\Quarter;
+use DoctrineExtensions\Query\Mysql\Radians;
+use DoctrineExtensions\Query\Mysql\Rand;
+use DoctrineExtensions\Query\Mysql\Regexp;
+use DoctrineExtensions\Query\Mysql\Replace;
+use DoctrineExtensions\Query\Mysql\Round;
+use DoctrineExtensions\Query\Mysql\Second;
+use DoctrineExtensions\Query\Mysql\Sha1;
+use DoctrineExtensions\Query\Mysql\Sha2;
+use DoctrineExtensions\Query\Mysql\Sin;
+use DoctrineExtensions\Query\Mysql\Soundex;
+use DoctrineExtensions\Query\Mysql\Std;
+use DoctrineExtensions\Query\Mysql\StrToDate;
+use DoctrineExtensions\Query\Mysql\Tan;
+use DoctrineExtensions\Query\Mysql\Time;
+use DoctrineExtensions\Query\Mysql\TimestampAdd;
+use DoctrineExtensions\Query\Mysql\TimestampDiff;
+use DoctrineExtensions\Query\Mysql\UuidShort;
+use DoctrineExtensions\Query\Mysql\Week;
+use DoctrineExtensions\Query\Mysql\WeekDay;
+use DoctrineExtensions\Query\Mysql\Year;
+use DoctrineExtensions\Types\CarbonDateType;
+use DoctrineExtensions\Types\CarbonTimeType;
+use ZF3Belcebur\DoctrineORMResources\Query\Functions\Mysql\STDistanceSphere;
+use ZF3Belcebur\DoctrineORMResources\Repository\BaseRepository;
+use ZF3Belcebur\DoctrineORMResources\Repository\BaseRepositoryFactory;
 
-Installation of this module uses composer. For composer documentation, please refer to
-[getcomposer.org](http://getcomposer.org/).
-
-```sh
-composer require zf3belcebur/doctrine-orm-resources
-```
-
-## Configuration by default
-
-```php
-'doctrine' => [
+return [
+    'service_manager' => [
+        'factories' => [
+            BaseRepository::class => BaseRepositoryFactory::class,
+        ],
+    ],
+    'doctrine' => [
         'configuration' => [
             'orm_default' => [
                 'repository_factory' => BaseRepository::class,
@@ -108,20 +171,4 @@ composer require zf3belcebur/doctrine-orm-resources
             ],
         ],
     ],
-    
-```
-
-## BaseRepository
-
-Extends `Doctrine\ORM\EntityRepository` with access to use `Zend\Http\PhpEnvironment\Request`,`Zend\Mvc\I18n\Router\TranslatorAwareTreeRouteStack`,`Zend\Router\RouteMatch` and `Zend\Router\RouteStackInterface`
-
-
-# Validators
-
-- `NoObjectExist` allow use multiple fields in validator
-- `UniqueObject` allow use multiple fields in validator
-
-
-# Walkers
-
-Extends `GedmoTranslationWalker` to only do necessary query joins 
+];
