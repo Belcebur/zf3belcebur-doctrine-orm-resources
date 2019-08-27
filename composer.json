@@ -10,6 +10,9 @@
     "beberlei/doctrineextensions": "^1.0",
     "gedmo/doctrine-extensions": "^2.0"
   },
+  "suggest": {
+    "nesbot/carbon": "A API extension for DateTime that supports 281 different languages."
+  },
   "license": "Apache-2.0",
   "authors": [
     {
