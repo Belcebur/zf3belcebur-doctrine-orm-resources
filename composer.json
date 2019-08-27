@@ -6,16 +6,9 @@
     "php": "^7.1",
     "doctrine/doctrine-module": "2.*",
     "doctrine/doctrine-orm-module": "2.*",
-    "creof/doctrine2-spatial": "1.*",
-    "beberlei/doctrineextensions": "v1.1.4",
-    "gedmo/doctrine-extensions": "^2.4"
-  },
-  "provide": {
-    "doctrine/doctrine-module": "2.*",
-    "doctrine/doctrine-orm-module": "2.*",
-    "creof/doctrine2-spatial": "1.*",
-    "beberlei/doctrineextensions": "v1.1.4",
-    "gedmo/doctrine-extensions": "^2.4"
+    "creof/doctrine2-spatial": "^1.0",
+    "beberlei/doctrineextensions": "^1.0",
+    "gedmo/doctrine-extensions": "^2.0"
   },
   "license": "Apache-2.0",
   "authors": [
