@@ -74,11 +74,19 @@ use DoctrineExtensions\Query\Mysql\WeekDay;
 use DoctrineExtensions\Query\Mysql\Year;
 use DoctrineExtensions\Types\CarbonDateType;
 use DoctrineExtensions\Types\CarbonTimeType;
+use ZF3Belcebur\DoctrineORMResources\ORM\Mapping\ClassMetadataFactory;
 use ZF3Belcebur\DoctrineORMResources\Query\Functions\Mysql\STDistanceSphere;
 use ZF3Belcebur\DoctrineORMResources\Repository\BaseRepository;
 use ZF3Belcebur\DoctrineORMResources\Repository\BaseRepositoryFactory;
 
 return [
+    __NAMESPACE__ => [
+        'gedmo' => [
+            'custom_translation_classes' => [
+                // 'YourNameSpace\CustomEntityTranslation'
+            ]
+        ]
+    ],
     'service_manager' => [
         'factories' => [
             BaseRepository::class => BaseRepositoryFactory::class,
@@ -87,6 +95,7 @@ return [
     'doctrine' => [
         'configuration' => [
             'orm_default' => [
+                'class_metadata_factory_name' => ClassMetadataFactory::class,
                 'repository_factory' => BaseRepository::class,
                 'types' => [
                     'point' => PointType::class,

@@ -18,12 +18,48 @@ Installation of this module uses composer. For composer documentation, please re
 composer require zf3belcebur/doctrine-orm-resources
 ```
 
+## BaseRepository
+
+Extends `Doctrine\ORM\EntityRepository` with access to use `Zend\Http\PhpEnvironment\Request`,`Zend\Mvc\I18n\Router\TranslatorAwareTreeRouteStack`,`Zend\Router\RouteMatch` and `Zend\Router\RouteStackInterface`
+
+
+# Validators
+
+- `NoObjectExist` allow use multiple fields in validator
+- `UniqueObject` allow use multiple fields in validator
+
+
+# Gedmo Performance
+
+#### Walkers
+Extends `GedmoTranslationWalker` to only do necessary query joins 
+
+#### Custom class_metadata_factory_name `ZF3Belcebur\DoctrineORMResources\ORM\Mapping`
+- [https://github.com/Atlantic18/DoctrineExtensions/pull/1432](https://github.com/Atlantic18/DoctrineExtensions/pull/1432) 
+- [https://github.com/Atlantic18/DoctrineExtensions/pull/1432](https://github.com/Atlantic18/DoctrineExtensions/pull/1432) 
+
+
+
 ## Configuration by default
 
 ```php
-'doctrine' => [
+return [
+    __NAMESPACE__ => [
+        'gedmo' => [
+            'custom_translation_classes' => [
+                // 'YourNameSpace\CustomEntityTranslation'
+            ]
+        ]
+    ],
+    'service_manager' => [
+        'factories' => [
+            BaseRepository::class => BaseRepositoryFactory::class,
+        ],
+    ],
+    'doctrine' => [
         'configuration' => [
             'orm_default' => [
+                'class_metadata_factory_name' => ClassMetadataFactory::class,
                 'repository_factory' => BaseRepository::class,
                 'types' => [
                     'point' => PointType::class,
@@ -108,20 +144,6 @@ composer require zf3belcebur/doctrine-orm-resources
             ],
         ],
     ],
+];
     
 ```
-
-## BaseRepository
-
-Extends `Doctrine\ORM\EntityRepository` with access to use `Zend\Http\PhpEnvironment\Request`,`Zend\Mvc\I18n\Router\TranslatorAwareTreeRouteStack`,`Zend\Router\RouteMatch` and `Zend\Router\RouteStackInterface`
-
-
-# Validators
-
-- `NoObjectExist` allow use multiple fields in validator
-- `UniqueObject` allow use multiple fields in validator
-
-
-# Walkers
-
-Extends `GedmoTranslationWalker` to only do necessary query joins 
