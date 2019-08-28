@@ -21,9 +21,81 @@ Installation of this module uses composer. For composer documentation, please re
 composer require zf3belcebur/doctrine-orm-resources
 ```
 
-## BaseRepository
+## Extend your repository with`\ZF3Belcebur\DoctrineORMResources\Repository\BaseEntityRepository`
 
-Extends `Doctrine\ORM\EntityRepository` with access to use `Zend\Http\PhpEnvironment\Request`,`Zend\Mvc\I18n\Router\TranslatorAwareTreeRouteStack`,`Zend\Router\RouteMatch` and `Zend\Router\RouteStackInterface`
+Extends `Doctrine\ORM\EntityRepository` with access to use `Zend\Http\PhpEnvironment\Request`,`Zend\Mvc\I18n\Router\TranslatorAwareTreeRouteStack`,`Zend\Router\RouteMatch` and `Zend\Router\RouteStackInterface` and use the new method findByQb
+
+```php
+return [
+'doctrine' => [
+    'configuration' => [
+        'orm_default' => [
+            'class_metadata_factory_name' => ClassMetadataFactory::class,
+            'repository_factory' => BaseRepository::class,
+        ]
+    ]
+];
+```
+
+
+### new method getEntityAlias()
+```php
+    // Entity --> Application\Entity\Admin1
+   echo $admin1Repo->getEntityAlias(); // --> "a" 
+```
+
+### new method getQueryWithGedmoTranslation()
+
+This method apply Gedmo Walkers and Hints to query, get defaultLocale from param or find "locale" on routeMatch params
+Definition
+```php
+   public function getQueryWithGedmoTranslation(QueryBuilder $qb, string $locale = null, string $defaultLocale = null): Query
+```
+
+### new method findByQb()
+
+Definition
+```php
+   public function findByQb(array $criteria, array $orderBy = [], int $limit = null, int $offset = null, string $alias = null): QueryBuilder;
+```
+
+Examples
+```php
+$admin1sQb = $admin1Repo->findByQb(['country' => $country], ['name' => 'ASC']);
+$criteria =
+    [
+        'orX' => [
+            [
+                'operator' => 'like',
+                'value' => '%espa%',
+                'field' => 'name',
+            ],
+            [
+                'operator' => 'like',
+                'value' => '%espa%',
+                'field' => 'slugName',
+            ],
+            'andX' => [
+                [
+                    'operator' => 'eq',
+                    'value' => '%espa%',
+                    'field' => 'name',
+                ],
+                [
+                    'operator' => 'isNull',
+                    'field' => 'slugName',
+                ],
+            ],
+        ],
+        [
+            'operator' => 'like',
+            'value' => '%cosas%',
+            'field' => 'slug',
+        ],
+    ];
+   $admin1sQb = $admin1Repo->findByQb($criteria);
+```
+
 
 
 # Validators
@@ -41,7 +113,16 @@ Extends `GedmoTranslationWalker` to only do necessary query joins
 - [https://github.com/Atlantic18/DoctrineExtensions/pull/1432](https://github.com/Atlantic18/DoctrineExtensions/pull/1432) 
 - [https://github.com/Atlantic18/DoctrineExtensions/pull/1432](https://github.com/Atlantic18/DoctrineExtensions/pull/1432) 
 
-
+```php
+return [
+'doctrine' => [
+    'configuration' => [
+        'orm_default' => [
+            'class_metadata_factory_name' => ClassMetadataFactory::class,
+        ]
+    ]
+];
+```
 
 ## Configuration by default
 
