@@ -9,6 +9,9 @@ Integrate different modules and provide new resources for DoctrineORM & ZF3:
 - [gedmo/doctrine-extensions](https://packagist.org/packages/gedmo/doctrine-extensions)
 
 
+## See
+- [https://packagist.org/explore/?query=zf3belcebur](https://packagist.org/explore/?query=zf3belcebur)
+
 ## Installation
 
 Installation of this module uses composer. For composer documentation, please refer to

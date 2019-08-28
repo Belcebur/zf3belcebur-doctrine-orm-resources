@@ -11,13 +11,17 @@
     "gedmo/doctrine-extensions": "2.*|3.*"
   },
   "suggest": {
+    "zf3belcebur/materialize-css-helper": "MaterializeCss Helper integration to ZF3",
+    "zf3belcebur/mongodb-logger": "MongoDb Logger integration to ZF3",
+    "zf3belcebur/oauth2-social-client": "ZF3 extends module from thephpleague/oauth2-client",
     "nesbot/carbon": "A API extension for DateTime that supports 281 different languages."
   },
   "license": "Apache-2.0",
   "authors": [
     {
       "name": "David Garcia",
-      "email": "garcia.gordo.david@gmail.com"
+      "email": "garcia.gordo.david@gmail.com",
+      "homepage": "https://github.com/Belcebur"
     }
   ],
   "minimum-stability": "stable",
