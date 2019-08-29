@@ -18,6 +18,7 @@ use CrEOF\Spatial\ORM\Query\AST\Functions\MySql\STBuffer;
 use CrEOF\Spatial\ORM\Query\AST\Functions\MySql\STContains;
 use CrEOF\Spatial\ORM\Query\AST\Functions\MySql\STDistance;
 use CrEOF\Spatial\ORM\Query\AST\Functions\MySql\STIntersects;
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver as AnnotationORMDriver;
 use DoctrineExtensions\Query\Mysql\Acos;
 use DoctrineExtensions\Query\Mysql\Asin;
 use DoctrineExtensions\Query\Mysql\Atan;
@@ -74,6 +75,8 @@ use DoctrineExtensions\Query\Mysql\WeekDay;
 use DoctrineExtensions\Query\Mysql\Year;
 use DoctrineExtensions\Types\CarbonDateType;
 use DoctrineExtensions\Types\CarbonTimeType;
+use Gedmo\Timestampable\TimestampableListener;
+use Gedmo\Translatable\TranslatableListener;
 use ZF3Belcebur\DoctrineORMResources\ORM\Mapping\ClassMetadataFactory;
 use ZF3Belcebur\DoctrineORMResources\Query\Functions\Mysql\STDistanceSphere;
 use ZF3Belcebur\DoctrineORMResources\Repository\BaseRepository;
@@ -93,6 +96,28 @@ return [
         ],
     ],
     'doctrine' => [
+        'eventmanager' => [
+            'orm_default' => [
+                'subscribers' => [
+                    TranslatableListener::class,
+                    TimestampableListener::class,
+                ],
+            ],
+        ],
+        'driver' => [
+            'translatable_orm_metadata_driver' => [
+                'class' => AnnotationORMDriver::class,
+                'cache' => 'array',
+                'paths' => [
+                    getcwd() . '/vendor/gedmo/doctrine-extensions/src/Translatable/Entity',
+                ],
+            ],
+            'orm_default' => [
+                'drivers' => [
+                    'Gedmo\Translatable\Entity' => 'translatable_orm_metadata_driver',
+                ],
+            ],
+        ],
         'configuration' => [
             'orm_default' => [
                 'class_metadata_factory_name' => ClassMetadataFactory::class,
