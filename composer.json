@@ -8,7 +8,8 @@
     "doctrine/doctrine-orm-module": "2.*",
     "creof/doctrine2-spatial": "^1.0",
     "beberlei/doctrineextensions": "^1.0",
-    "gedmo/doctrine-extensions": "2.*|3.*"
+    "gedmo/doctrine-extensions": "2.*|3.*",
+    "zendframework/zend-form": "^2.0"
   },
   "suggest": {
     "zf3belcebur/materialize-css-helper": "MaterializeCss Helper integration to ZF3",

@@ -21,6 +21,16 @@ Installation of this module uses composer. For composer documentation, please re
 composer require zf3belcebur/doctrine-orm-resources
 ```
 
+Then add `ZF3Belcebur\DoctrineORMResources` to your `config/application.config.php`
+
+## Entity Traits
+- `ZF3\DoctrineORMResources\EntityTrait\Coordinates` 
+    - Latitude and Longitude fields
+- `ZF3\DoctrineORMResources\EntityTrait\GedmoEntityTranslatable` 
+    - Gedmo locale field
+- `ZF3\DoctrineORMResources\EntityTrait\Timestamp` 
+    - modified_at and created_at fields with Gedmo Timestampable
+
 ## Extend your repository with`\ZF3Belcebur\DoctrineORMResources\Repository\BaseEntityRepository`
 
 Extends `Doctrine\ORM\EntityRepository` with access to use `Zend\Http\PhpEnvironment\Request`,`Zend\Mvc\I18n\Router\TranslatorAwareTreeRouteStack`,`Zend\Router\RouteMatch` and `Zend\Router\RouteStackInterface` and use the new method findByQb
@@ -126,6 +136,8 @@ return [
 
 ## Configuration by default
 
+[See module.config.php](./config/module.config.php)
+
 ```php
 return [
     __NAMESPACE__ => [
@@ -141,6 +153,28 @@ return [
         ],
     ],
     'doctrine' => [
+        'eventmanager' => [
+            'orm_default' => [
+                'subscribers' => [
+                    TranslatableListener::class,
+                    TimestampableListener::class,
+                ],
+            ],
+        ],
+        'driver' => [
+            'translatable_orm_metadata_driver' => [
+                'class' => AnnotationORMDriver::class,
+                'cache' => 'array',
+                'paths' => [
+                    getcwd() . '/vendor/gedmo/doctrine-extensions/src/Translatable/Entity',
+                ],
+            ],
+            'orm_default' => [
+                'drivers' => [
+                    'Gedmo\Translatable\Entity' => 'translatable_orm_metadata_driver',
+                ],
+            ],
+        ],
         'configuration' => [
             'orm_default' => [
                 'class_metadata_factory_name' => ClassMetadataFactory::class,
