@@ -101,6 +101,7 @@ return [
                 'subscribers' => [
                     TranslatableListener::class,
                     TimestampableListener::class,
+                    //SortableListener::class,
                 ],
             ],
         ],
