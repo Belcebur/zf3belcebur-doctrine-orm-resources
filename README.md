@@ -74,7 +74,7 @@ return [
 ];
 ```
 
-- Implement `PostConstructInterface` event use `ZF3Belcebur\DoctrineORMResources\RepositoryTrait` in your repository 
+- Implement `PostConstructInterface` event use `ZF3Belcebur\DoctrineORMResources\RepositoryTrait\SortableListenerAdapterTrait` in your repository 
 
 ```php
 /**
@@ -85,7 +85,7 @@ return [
  */
 class CustomRepo extends BaseEntityRepository implements PostConstructInterface
 {
-    use \ZF3Belcebur\DoctrineORMResources\RepositoryTrait;
+    use \ZF3Belcebur\DoctrineORMResources\RepositoryTrait\SortableListenerAdapterTrait;
     
     public function postConstruct(): void
     {

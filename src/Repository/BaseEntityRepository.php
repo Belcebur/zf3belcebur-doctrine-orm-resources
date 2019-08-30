@@ -55,13 +55,19 @@ class BaseEntityRepository extends EntityRepository
         }
     }
 
+    /**
+     * @param QueryBuilder $qb
+     * @param string|null $locale
+     * @param string|null $defaultLocale
+     * @return Query
+     */
     public function getQueryWithGedmoTranslation(QueryBuilder $qb, string $locale = null, string $defaultLocale = null): Query
     {
         $routeMatch = $this->getRouteMatch();
         $query = $qb->getQuery();
         $query->useQueryCache(false);
         $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, GedmoTranslationWalker::class);
-        $query->setHint(TranslatableListener::HINT_TRANSLATABLE_LOCALE, $locale ?? $routeMatch->getParam('locale', $routeMatch->getParam('locale', $defaultLocale)));
+        $query->setHint(TranslatableListener::HINT_TRANSLATABLE_LOCALE, $locale ?? $routeMatch->getParam('locale', $defaultLocale));
         $query->setHint(TranslatableListener::HINT_FALLBACK, 1);
 
         return $query;
@@ -158,6 +164,9 @@ class BaseEntityRepository extends EntityRepository
         return $qb;
     }
 
+    /**
+     * @return string
+     */
     public function getEntityAlias(): string
     {
         $filterChain = new FilterChain();
