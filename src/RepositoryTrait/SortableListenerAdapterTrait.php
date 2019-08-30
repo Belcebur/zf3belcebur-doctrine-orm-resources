@@ -24,7 +24,7 @@ trait SortableListenerAdapterTrait
      *
      * @var SortableListener
      */
-    protected $listener;
+    protected $sortableListener;
 
     /**
      * @var array
@@ -56,7 +56,7 @@ trait SortableListenerAdapterTrait
      */
     public function getBySortableGroupsQueryBuilder(array $groupValues = array()): QueryBuilder
     {
-        if (!$this->listener) {
+        if (!$this->sortableListener) {
             $this->initListenerConfig();
         }
 
@@ -101,7 +101,7 @@ trait SortableListenerAdapterTrait
         if ($sortableListener === null) {
             throw new \Gedmo\Exception\InvalidMappingException('This repository can be attached only to ORM sortable listener');
         }
-        $this->listener = $sortableListener;
-        $this->config = $this->listener->getConfiguration($this->_em, $this->meta->name);
+        $this->sortableListener = $sortableListener;
+        $this->config = $sortableListener->getConfiguration($this->_em, $this->meta->name);
     }
 }
