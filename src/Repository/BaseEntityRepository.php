@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dgarcia
- * Date: 04/09/2018
- * Time: 11:32
- */
 
 namespace ZF3Belcebur\DoctrineORMResources\Repository;
 
@@ -21,7 +15,10 @@ use Zend\Filter\Word\CamelCaseToDash;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\I18n\Filter\Alpha;
 use Zend\Mvc\I18n\Router\TranslatorAwareTreeRouteStack;
+use Zend\Router\Http\TreeRouteStack;
 use Zend\Router\RouteMatch;
+use Zend\Router\RouteStackInterface;
+use Zend\Router\SimpleRouteStack;
 use ZF3Belcebur\DoctrineORMResources\Walker\GedmoTranslationWalker;
 use function array_key_exists;
 use function array_map;
@@ -44,15 +41,18 @@ class BaseEntityRepository extends EntityRepository
      */
     protected $request;
     /**
-     * @var TranslatorAwareTreeRouteStack
+     * @var TranslatorAwareTreeRouteStack|TreeRouteStack|SimpleRouteStack|RouteStackInterface
      */
     protected $router;
 
-    public function __construct(EntityManager $em, ClassMetadata $class, ?Request $request, ?TranslatorAwareTreeRouteStack $router)
+    public function __construct(EntityManager $em, ClassMetadata $class, ?Request $request, ?RouteStackInterface $router)
     {
         parent::__construct($em, $class);
         $this->request = $request;
         $this->router = $router;
+        if ($this instanceof PostConstructInterface) {
+            $this->postConstruct();
+        }
     }
 
     public function getQueryWithGedmoTranslation(QueryBuilder $qb, string $locale = null, string $defaultLocale = null): Query

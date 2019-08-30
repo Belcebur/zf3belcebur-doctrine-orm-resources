@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dgarcia
- * Date: 04/09/2018
- * Time: 10:01
- */
 
 namespace ZF3Belcebur\DoctrineORMResources\Repository;
 
@@ -14,8 +8,10 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Repository\RepositoryFactory;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Mvc\I18n\Router\TranslatorAwareTreeRouteStack;
+use Zend\Router\Http\TreeRouteStack;
 use Zend\Router\RouteMatch;
 use Zend\Router\RouteStackInterface;
+use Zend\Router\SimpleRouteStack;
 
 class BaseRepository implements RepositoryFactory
 {
@@ -42,7 +38,7 @@ class BaseRepository implements RepositoryFactory
 
     /**
      * @param Request $request
-     * @param RouteStackInterface $router
+     * @param TranslatorAwareTreeRouteStack|TreeRouteStack|SimpleRouteStack|RouteStackInterface $router
      * @param RouteMatch $routeMatch
      */
     public function __construct(?Request $request, ?RouteStackInterface $router, ?RouteMatch $routeMatch)
