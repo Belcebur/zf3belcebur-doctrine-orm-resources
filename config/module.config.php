@@ -110,7 +110,7 @@ return [
                 'class' => AnnotationORMDriver::class,
                 'cache' => 'array',
                 'paths' => [
-                    getcwd() . '/vendor/gedmo/doctrine-extensions/src/Translatable/Entity',
+                    getcwd() . '/vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity/',
                 ],
             ],
             'orm_default' => [
