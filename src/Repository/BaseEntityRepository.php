@@ -2,7 +2,6 @@
 
 namespace ZF3Belcebur\DoctrineORMResources\Repository;
 
-use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -28,7 +27,6 @@ use function implode;
 use function is_array;
 use function is_numeric;
 use function is_object;
-use function is_scalar;
 use function is_string;
 use function method_exists;
 use function str_replace;
@@ -153,12 +151,11 @@ class BaseEntityRepository extends EntityRepository
         }
 
         foreach ($parameters as $parameter) {
-            if (is_scalar($parameter['value']) || $parameter['value'] instanceof DateTime) {
+//            if (is_scalar($parameter['value']) || $parameter['value'] instanceof DateTime) {
                 $qb->setParameter($parameter['key'], $parameter['value']);
-            } else {
-                $qb->setParameter($parameter['key'], $parameter['value'], $parameter['type']);
-            }
-
+//            } else {
+//                $qb->setParameter($parameter['key'], $parameter['value'], $parameter['type']);
+//            }
         }
 
         return $qb;
