@@ -132,7 +132,7 @@ class BaseEntityRepository extends EntityRepository
         $qb = $this->createQueryBuilder($alias);
 
         $parameters = [];
-        $andWheres = $this->criteriaArrayToQbExpression($criteria, $parameters, $alias);
+        $andWheres = $this->filterArrayToQbExpression($criteria, $parameters, $alias);
 
         foreach ($andWheres as $andWhere) {
             $qb->andWhere($andWhere);
@@ -184,7 +184,7 @@ class BaseEntityRepository extends EntityRepository
      * @param string $alias
      * @return array[]
      */
-    private function criteriaArrayToQbExpression(array $criteria, array &$parameters = [], string $alias = 'entity'): array
+    private function filterArrayToQbExpression(array $criteria, array &$parameters = [], string $alias = 'entity'): array
     {
         if (!$alias) {
             $alias = $this->getEntityAlias();
@@ -193,13 +193,16 @@ class BaseEntityRepository extends EntityRepository
         $values = [];
         foreach ($criteria as $key => $data) {
             if ((!is_array($data) || (is_array($data) && !array_key_exists('field', $data))) && !method_exists($exp, $key)) {
+
+                if (is_array($data)) {
+                    $data['operator'] = 'in';
+                }
+                
                 $data = [
                     'value' => $data,
                     'field' => $key,
                 ];
-                if (is_array($data)) {
-                    $data['operator'] = 'in';
-                }
+
                 $key = 0;
             }
 
@@ -234,7 +237,7 @@ class BaseEntityRepository extends EntityRepository
                     }
                 }
             } elseif (method_exists($exp, $key)) {
-                $valExpressions = $this->criteriaArrayToQbExpression($data, $parameters, $alias);
+                $valExpressions = $this->filterArrayToQbExpression($data, $parameters, $alias);
                 if (in_array($key, [
                     'andX',
                     'orX',
